@@ -1,0 +1,94 @@
+group 'automation_test_framework'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'io.qameta.allure'
+
+sourceCompatibility = 1.8
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.5"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    testNgVersion = '6.9.10'
+    log4jVersion = '1.2.17'
+    lombokVersion = '1.16.16'
+    allureJavaVersion = '2.0-BETA5'
+
+    hibernateCoreVersion = '5.2.9.Final'
+    hibernateValidationVersion = '5.4.1.Final'
+    hibernateSearchOrmVersion = '5.7.0.Final'
+
+    serveletApiVersion = '2.5'
+    mssqlJdbcVersion = '6.1.0.jre7'
+    javaxPersistenceVersion = '1.0.0.Final'
+    mysqlConnectorJavaVersion = '5.1.35'
+    springContext = '5.0.0.RELEASE'
+
+    seleniumJavaVersion = '3.4.0'
+    seleniumFirefoxDriverVersion = '3.4.0'
+    seleniumChromeDriverVersion = '3.4.0'
+    seleniumApiVersion = '3.4.0'
+    seleniumSupportVersion = '3.4.0'
+    selenideVersion = '4.10'
+
+    restAssureVersion = '3.0.3'
+    openCsvVersion = "4.0"
+}
+
+dependencies {
+    compile "org.testng:testng:$testNgVersion"
+    compile "log4j:log4j:$log4jVersion"
+    compile "org.projectlombok:lombok:$lombokVersion"
+    compile "io.qameta.allure:allure-java-commons:$allureJavaVersion"
+
+    compile "org.hibernate:hibernate-core:$hibernateCoreVersion"
+    compile "org.hibernate:hibernate-validator:$hibernateValidationVersion"
+    compile "org.hibernate:hibernate-search-orm:$hibernateSearchOrmVersion"
+
+    compile "javax.servlet:servlet-api:$serveletApiVersion"
+    compile "com.microsoft.sqlserver:mssql-jdbc:$mssqlJdbcVersion"
+    compile "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:$javaxPersistenceVersion"
+    compile "org.springframework:spring-context:$springContext"
+
+    compile "org.seleniumhq.selenium:selenium-java:$seleniumJavaVersion"
+    compile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumFirefoxDriverVersion"
+    compile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumChromeDriverVersion"
+    compile "org.seleniumhq.selenium:selenium-api:$seleniumApiVersion"
+    compile "org.seleniumhq.selenium:selenium-support:$seleniumSupportVersion"
+    compile "com.codeborne:selenide:$selenideVersion"
+
+    compile "com.opencsv:opencsv:$openCsvVersion"
+
+    compile "io.rest-assured:rest-assured:$restAssureVersion"
+}
+
+allure {
+    autoconfigure = true
+    version = '2.4.1'
+}
+
+task testAPI(type: Test) {
+    useTestNG()
+    options.suites("src/test/resources/suites/api.xml")
+}
+
+task testWebUI(type: Test) {
+    useTestNG()
+    options.suites("src/test/resources/suites/web_ui.xml")
+}
+
+task testAll(type: Test) {
+    useTestNG()
+}
